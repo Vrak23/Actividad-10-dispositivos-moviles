@@ -15,7 +15,7 @@ class _LoginScreenState extends State<LoginScreen> {
   final _usernameController = TextEditingController(text: 'admin@senati.pe');
   final _passwordController = TextEditingController(text: '123456');
   bool _obscurePassword = true;
-  bool _isLoading = false;
+  final bool _isLoading = false;
 
   @override
   void dispose() {
@@ -26,38 +26,31 @@ class _LoginScreenState extends State<LoginScreen> {
 
   void _handleLogin() {
     if (_formKey.currentState!.validate()) {
-      setState(() => _isLoading = true);
+      Navigator.pushReplacementNamed(context, AppRoutes.home);
 
-      Future.delayed(const Duration(milliseconds: 300), () {
-        if (!mounted) return;
-        setState(() => _isLoading = false);
-
-        Navigator.pushReplacementNamed(context, AppRoutes.home);
-
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: const Row(
-              children: [
-                Icon(Icons.verified_user_rounded, color: AppColors.emeraldAccent, size: 20),
-                SizedBox(width: 10),
-                Expanded(
-                  child: Text(
-                    'Bienvenido al Catálogo de Hardware SENATI',
-                    style: TextStyle(fontWeight: FontWeight.w600),
-                  ),
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: const Row(
+            children: [
+              Icon(Icons.verified_user_rounded, color: AppColors.emeraldAccent, size: 20),
+              SizedBox(width: 10),
+              Expanded(
+                child: Text(
+                  'Bienvenido al Catálogo de Hardware SENATI',
+                  style: TextStyle(fontWeight: FontWeight.w600),
                 ),
-              ],
-            ),
-            backgroundColor: AppColors.graphite,
-            behavior: SnackBarBehavior.floating,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12),
-            ),
-            margin: const EdgeInsets.all(16),
-            duration: const Duration(seconds: 2),
+              ),
+            ],
           ),
-        );
-      });
+          backgroundColor: AppColors.graphite,
+          behavior: SnackBarBehavior.floating,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+          margin: const EdgeInsets.all(16),
+          duration: const Duration(seconds: 2),
+        ),
+      );
     }
   }
 

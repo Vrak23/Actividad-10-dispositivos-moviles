@@ -56,10 +56,6 @@ class _HomeScreenState extends State<HomeScreen> {
         final allComponents = widget.controller.allComponents;
         final isSearching = widget.controller.isSearchActive;
 
-        final totalUnits = allComponents.fold<int>(
-          0,
-          (sum, item) => sum + item.stockCount,
-        );
         final totalValue = allComponents.fold<double>(
           0,
           (sum, item) => sum + item.price,
@@ -161,8 +157,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 children: [
                   // Panel de resumen tipo consola ejecutiva
                   Container(
-                    margin: const EdgeInsets.fromLTRB(16, 14, 16, 10),
-                    padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 14),
+                    margin: const EdgeInsets.fromLTRB(16, 8, 16, 6),
+                    padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
                     decoration: BoxDecoration(
                       gradient: const LinearGradient(
                         colors: [AppColors.graphite, Color(0xFF1E293B)],
@@ -178,56 +174,49 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                       ],
                     ),
-                    child: Wrap(
-                      alignment: WrapAlignment.spaceBetween,
-                      crossAxisAlignment: WrapCrossAlignment.center,
-                      spacing: 16,
-                      runSpacing: 10,
+                    child: Row(
                       children: [
-                        const Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Text(
-                              'INVENTARIO TÉCNICO DE LABORATORIO',
-                              style: TextStyle(
-                                fontSize: 10.5,
-                                fontWeight: FontWeight.w800,
-                                color: AppColors.emeraldAccent,
-                                letterSpacing: 0.7,
+                        const Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Text(
+                                'INVENTARIO TÉCNICO DE LABORATORIO',
+                                style: TextStyle(
+                                  fontSize: 10,
+                                  fontWeight: FontWeight.w800,
+                                  color: AppColors.emeraldAccent,
+                                  letterSpacing: 0.7,
+                                ),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
                               ),
-                            ),
-                            SizedBox(height: 3),
-                            Text(
-                              'Seleccione una categoría o toque un equipo para ver su ficha:',
-                              style: TextStyle(
-                                fontSize: 13,
-                                fontWeight: FontWeight.w500,
-                                color: Color(0xFFCBD5E1),
+                              SizedBox(height: 2),
+                              Text(
+                                'Seleccione una categoría o toque un equipo para ver su ficha:',
+                                style: TextStyle(
+                                  fontSize: 12.5,
+                                  fontWeight: FontWeight.w500,
+                                  color: Color(0xFFCBD5E1),
+                                ),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
-                        Wrap(
-                          spacing: 8,
-                          runSpacing: 6,
-                          children: [
-                            _MetricBadge(
-                              label: 'Mostrando',
-                              value: '${components.length} equipos',
-                              accentColor: AppColors.emeraldAccent,
-                            ),
-                            _MetricBadge(
-                              label: 'Stock',
-                              value: '$totalUnits unid.',
-                              accentColor: const Color(0xFF60A5FA),
-                            ),
-                            _MetricBadge(
-                              label: 'Catálogo',
-                              value: Formatters.formatCurrency(totalValue),
-                              accentColor: const Color(0xFFFBBF24),
-                            ),
-                          ],
+                        const SizedBox(width: 8),
+                        _MetricBadge(
+                          label: 'Equipos',
+                          value: '${components.length}',
+                          accentColor: AppColors.emeraldAccent,
+                        ),
+                        const SizedBox(width: 6),
+                        _MetricBadge(
+                          label: 'Total',
+                          value: Formatters.formatCurrency(totalValue),
+                          accentColor: const Color(0xFFFBBF24),
                         ),
                       ],
                     ),
@@ -282,16 +271,16 @@ class _HomeScreenState extends State<HomeScreen> {
                           )
                         : LayoutBuilder(
                             builder: (context, constraints) {
-                              final isWide = constraints.maxWidth >= 680;
+                              final isWide = constraints.maxWidth >= 860;
                               if (isWide) {
                                 return GridView.builder(
                                   padding: const EdgeInsets.fromLTRB(16, 4, 16, 92),
                                   gridDelegate:
                                       const SliverGridDelegateWithFixedCrossAxisCount(
                                     crossAxisCount: 2,
-                                    mainAxisExtent: 172,
-                                    crossAxisSpacing: 14,
-                                    mainAxisSpacing: 14,
+                                    mainAxisExtent: 82,
+                                    crossAxisSpacing: 12,
+                                    mainAxisSpacing: 10,
                                   ),
                                   itemCount: components.length,
                                   itemBuilder: (context, index) {
@@ -307,7 +296,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               return ListView.separated(
                                 padding: const EdgeInsets.fromLTRB(16, 4, 16, 92),
                                 itemCount: components.length,
-                                separatorBuilder: (_, _) => const SizedBox(height: 12),
+                                separatorBuilder: (_, _) => const SizedBox(height: 8),
                                 itemBuilder: (context, index) {
                                   final item = components[index];
                                   return ComponentCard(
